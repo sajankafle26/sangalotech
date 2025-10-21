@@ -18,6 +18,7 @@ const HeroCourseCard: React.FC<{ course: Course }> = ({ course }) => (
         fill
         style={{ objectFit: 'cover' }}
         className="rounded-lg"
+        priority
       />
     </div>
     <div className="p-3">
