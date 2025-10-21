@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image'
 import Link from 'next/link';
 import type { Course } from '../types';
-// @ts-ignore
+// @ts-expect-error
 import { Swiper, SwiperSlide } from 'swiper/react';
-// @ts-ignore
+// @ts-expect-error
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -93,7 +94,7 @@ const CourseDetail: React.FC<{ course: Course; }> = ({ course }) => {
                         <div className="bg-white p-6 rounded-lg shadow">
                              <h2 className="text-2xl font-bold mb-4">Meet Your Instructor</h2>
                              <div className="flex items-start gap-6">
-                                <img src={course.instructor.imageUrl} alt={course.instructor.name} className="w-24 h-24 rounded-full object-cover" />
+                                <Image src="/fallback.jpg" alt="image" width={800} height={450} />
                                 <div className="flex-1">
                                     <h3 className="text-xl font-semibold text-[#00548B]">{course.instructor.name}</h3>
                                     <p className="text-sm font-medium text-gray-500 mb-2">{course.instructor.title}</p>
@@ -119,7 +120,7 @@ const CourseDetail: React.FC<{ course: Course; }> = ({ course }) => {
                                         <SwiperSlide key={index} className="bg-white p-8 rounded-lg">
                                             <div className="flex flex-col h-full">
                                                 <div className="flex items-center mb-4">
-                                                    <img src={testimonial.imageUrl} alt={testimonial.studentName} className="w-12 h-12 rounded-full object-cover mr-4"/>
+                                                    <Image src="/fallback.jpg" alt="image" width={800} height={450} />
                                                     <div>
                                                         <p className="font-semibold">{testimonial.studentName}</p>
                                                         <div className="text-yellow-400">
@@ -139,7 +140,7 @@ const CourseDetail: React.FC<{ course: Course; }> = ({ course }) => {
                     {/* Right Sticky Card */}
                     <div className="mt-10 lg:mt-0">
                         <div className="sticky top-24 bg-white rounded-lg shadow-lg overflow-hidden">
-                            <img src={course.imageUrl} alt={course.title} className="w-full h-56 object-cover" />
+                            <Image src="/fallback.jpg" alt="image" width={800} height={450} />
                             <div className="p-6">
                                 <p className="text-3xl font-bold mb-4">{course.price}</p>
                                 <button className="w-full bg-red-500 text-white font-bold py-3 rounded-lg hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">Enroll Now</button>

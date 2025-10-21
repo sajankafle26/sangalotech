@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image'
 import Link from 'next/link';
 import { Course, BlogPost, SearchResult } from '../types';
 
@@ -11,7 +12,7 @@ const SearchResultCard: React.FC<{ item: SearchResult; }> = ({ item }) => {
   return (
     <Link href={href} className="w-full text-left bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex flex-col md:flex-row">
       <div className="md:w-1/3">
-        <img src={item.imageUrl} alt={item.title} className="w-full h-48 md:h-full object-cover" />
+        <Image src="/fallback.jpg" alt="image" width={800} height={450} />
       </div>
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>

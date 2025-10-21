@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import type { Course } from '../types';
-// @ts-ignore
+// @ts-expect-error
 import { Swiper, SwiperSlide } from 'swiper/react';
-// @ts-ignore
+// @ts-expect-error
 import { EffectCards, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-cards';

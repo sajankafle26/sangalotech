@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'
 import Link from 'next/link';
 import type { TechService } from '../types';
 
@@ -39,7 +40,7 @@ const TechServiceDetail: React.FC<{ service: TechService; }> = ({ service }) => 
                     {/* Right Image & CTA */}
                     <div className="lg:col-span-2 mt-10 lg:mt-0">
                          <div className="sticky top-24">
-                            <img src={service.imageUrl} alt={service.title} className="w-full h-auto object-cover rounded-lg shadow-lg mb-8" />
+                            <Image src="/fallback.jpg" alt="image" width={800} height={450} />
                             <div className="bg-blue-50 border-l-4 border-[#00548B] p-6 rounded-r-lg">
                                 <h3 className="text-xl font-bold text-gray-900">Have a project in mind?</h3>
                                 <p className="mt-2 text-gray-600">Let's discuss how we can help you achieve your goals.</p>

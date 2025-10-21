@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'
 import type { Product } from '../types';
 
 type Tab = 'school' | 'news' | 'clinic';
@@ -15,7 +16,7 @@ const ProductTabContent: React.FC<{ product: Product, active: boolean }> = ({ pr
                 </a>
             </div>
             <div>
-                <img src={product.imageUrl} alt={product.title} className="rounded-lg shadow" />
+                <Image src="/fallback.jpg" alt="image" width={800} height={450} />
             </div>
         </div>
     ) : null

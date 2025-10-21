@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'
 import Link from 'next/link';
 // Fix: Removed unused static import.
 import type { BlogPost } from '../types';
@@ -6,10 +7,7 @@ import type { BlogPost } from '../types';
 const BlogCard: React.FC<{ post: BlogPost; }> = ({ post }) => (
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group flex flex-col">
         <div className="relative overflow-hidden aspect-[16/9]">
-            <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src={post.imageUrl}
-                alt={post.title}
-                loading="lazy" />
+            <Image src="/fallback.jpg" alt="image" width={800} height={450} />
             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
         </div>
         <div className="p-6 space-y-4 flex flex-col flex-grow">

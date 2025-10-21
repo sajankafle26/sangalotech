@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'
 import Link from 'next/link';
 import type { BlogPost } from '../types';
 
@@ -18,14 +19,14 @@ const BlogDetail: React.FC<{ blogPost: BlogPost; recentPosts: BlogPost[] }> = ({
                 <div className="lg:grid lg:grid-cols-3 lg:gap-8">
                     {/* Main Content */}
                     <article className="lg:col-span-2 space-y-8">
-                        <img src={blogPost.imageUrl} alt={blogPost.title} className="w-full h-auto max-h-96 object-cover rounded-lg shadow-lg" />
+                        <Image src="/fallback.jpg" alt="image" width={800} height={450} />
 
                         <div className="space-y-4">
                             <h1 className="text-4xl font-extrabold text-gray-900">{blogPost.title}</h1>
 
                             <div className="flex items-center gap-4 text-sm text-gray-500">
                                 <div className="flex items-center gap-2">
-                                    <img src={blogPost.authorImageUrl} alt={blogPost.authorName} className="w-8 h-8 rounded-full object-cover" />
+                                    <Image src="/fallback.jpg" alt="image" width={800} height={450} />
                                     <span>{blogPost.authorName}</span>
                                 </div>
                                 <span>&bull;</span>
