@@ -13,10 +13,10 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: ["node_modules/**", ".next/**", "out/**", "build/**", "next-env.d.ts"],
-    rules: {
-      'react/no-unescaped-entities': 'off',
-      '@next/next/no-page-custom-font': 'off',
-    },
+    "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@next/next/no-img-element": "off"
+  }
   },
 ];
 
