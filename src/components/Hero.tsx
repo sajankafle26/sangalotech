@@ -12,14 +12,13 @@ import 'swiper/css/effect-cards';
 const HeroCourseCard: React.FC<{ course: Course }> = ({ course }) => (
   <div className="border-2 border-[#004A61] bg-white rounded-2xl shadow-lg p-4 overflow-hidden h-full">
     <div className="relative w-full h-40">
-     <Image
-  src={course.imageUrl || '/fallback.jpg'} // Replace with your default image path
-  alt={course.title || 'Course image'}
-  fill
-  style={{ objectFit: 'cover' }}
-  className="rounded-lg"
-/>
-
+      <Image
+        src={course.imageUrl || '/fallback.jpg'}
+        alt={course.title || 'Course image'}
+        fill
+        style={{ objectFit: 'cover' }}
+        className="rounded-lg"
+      />
     </div>
     <div className="p-3">
       <h3 className="font-bold text-lg h-12 line-clamp-2">{course.title}</h3>
