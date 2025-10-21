@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+:root {
+  --red: #ef4444;
+}
+
+body {
+  color: #1f2937; /* A slightly softer black for better readability */
+  background-color: #f9fafb; /* A very light gray background */
+}
+
+/* Swiper custom styles */
+.swiper-button-next, .swiper-button-prev {
+  color: #00548B !important;
+  transition: transform 0.2s ease-in-out;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    transform: scale(1.1);
+}
+
+.swiper-pagination-bullet-active {
+  background: #00548B !important;
+}
