@@ -1,58 +1,72 @@
-import { notFound } from 'next/navigation';
-import BlogDetail from '@/components/BlogDetail';
 import { connectToDatabase } from '@/lib/mongodb';
-import type { BlogPost } from '@/types';
-import { Metadata } from 'next';
+import { ObjectId } from 'mongodb';
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
 
-interface PageProps {
-  params: {
-    id: string;
-  };
+// ✅ Force runtime rendering so the DB isn’t queried at build
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+interface Blog {
+  _id: string;
+  title: string;
+  slug?: string;
+  content: string;
+  imageUrl?: string;
+  author?: string;
+  createdAt?: string;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const blogPost = await getBlogPost(params.id);
-  if (!blogPost) {
-    return {
-      title: 'Blog Post Not Found'
-    }
-  }
-  return {
-    title: `${blogPost.title} | Sangalo Tech Blog`,
-    description: blogPost.description,
-  }
+interface BlogPageProps {
+  params: { id: string };
 }
 
-export async function generateStaticParams() {
-  const { db } = await connectToDatabase();
-  const posts = await db.collection<BlogPost>('blogs').find({}, { projection: { id: 1 } }).toArray();
-  return posts.map((post) => ({
-    id: post.id.toString(),
-  }));
-}
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { id } = params;
 
-const getBlogPost = async (id: string): Promise<BlogPost | null> => {
-  const { db } = await connectToDatabase();
-  const post = await db.collection<BlogPost>('blogs').findOne({ id: parseInt(id) });
-  return post;
-};
-
-const getRecentPosts = async (currentPostId: number): Promise<BlogPost[]> => {
+  try {
     const { db } = await connectToDatabase();
-    const posts = await db.collection<BlogPost>('blogs').find({ id: { $ne: currentPostId } }).sort({ date: -1 }).limit(3).toArray();
-    return posts;
-}
 
-const BlogPage = async ({ params }: PageProps) => {
-  const blogPost = await getBlogPost(params.id);
+    // Validate and convert ObjectId
+    const query = ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { slug: id };
+    const blog = (await db.collection<Blog>('blogs').findOne(query)) as Blog | null;
 
-  if (!blogPost) {
+    if (!blog) {
+      notFound();
+    }
+
+    return (
+      <main className="max-w-3xl mx-auto py-12 px-4">
+        <article className="prose lg:prose-xl">
+          {blog.imageUrl && (
+            <div className="relative w-full h-96 mb-6">
+              <Image
+                src={blog.imageUrl}
+                alt={blog.title}
+                fill
+                className="object-cover rounded-xl"
+                priority
+              />
+            </div>
+          )}
+
+          <h1 className="text-4xl font-bold text-[#00548B] mb-2">{blog.title}</h1>
+
+          {blog.author && (
+            <p className="text-gray-500 text-sm mb-6">
+              By {blog.author} {blog.createdAt && `• ${new Date(blog.createdAt).toLocaleDateString()}`}
+            </p>
+          )}
+
+          <div
+            className="prose text-gray-700"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          />
+        </article>
+      </main>
+    );
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
     notFound();
   }
-
-  const recentPosts = await getRecentPosts(blogPost.id);
-
-  return <BlogDetail blogPost={JSON.parse(JSON.stringify(blogPost))} recentPosts={JSON.parse(JSON.stringify(recentPosts))} />;
-};
-
-export default BlogPage;
+}

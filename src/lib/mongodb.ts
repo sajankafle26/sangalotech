@@ -1,38 +1,40 @@
 import { MongoClient, Db } from 'mongodb';
 
-const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = process.env.DB_NAME;
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
-}
-
-if (!DB_NAME) {
-  throw new Error('Please define the DB_NAME environment variable inside .env.local');
-}
+let cachedClient: MongoClient | null = null;
+let cachedDb: Db | null = null;
 
 interface MongoConnection {
   client: MongoClient;
   db: Db;
 }
 
-let cachedClient: MongoClient | null = null;
-let cachedDb: Db | null = null;
-
+/**
+ * Safely connect to MongoDB at runtime (not build time).
+ * This avoids Next.js build failures on Vercel.
+ */
 export async function connectToDatabase(): Promise<MongoConnection> {
+  const uri = process.env.MONGODB_URI;
+  const dbName = process.env.DB_NAME;
+
+  if (!uri) throw new Error('Missing MONGODB_URI environment variable');
+  if (!dbName) throw new Error('Missing DB_NAME environment variable');
+
+  // Use cached connection if already connected
   if (cachedClient && cachedDb) {
     return { client: cachedClient, db: cachedDb };
   }
 
-  const client = await MongoClient.connect(MONGODB_URI, {
-    // useNewUrlParser: true, // Deprecated
-    // useUnifiedTopology: true, // Deprecated
-  });
+  try {
+    const client = new MongoClient(uri);
+    await client.connect();
+    const db = client.db(dbName);
 
-  const db = client.db(DB_NAME);
+    cachedClient = client;
+    cachedDb = db;
 
-  cachedClient = client;
-  cachedDb = db;
-
-  return { client, db };
+    return { client, db };
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw new Error('Failed to connect to the database');
+  }
 }
